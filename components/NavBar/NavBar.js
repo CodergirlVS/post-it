@@ -15,40 +15,48 @@ const NavBar = () => {
   const [signoutModal, setSignoutModal] = useState(false);
   const [photo, setPhoto] = useState("");
   const router = useRouter();
-  
-  useEffect(async () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-        setLoggedIn(true);
-      } else {
-        setCurrentUser("");
-      }
-    });
 
-    if (currentUser) {
-      const docRef = doc(db, "users", currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        docSnap.data().photo ? setPhoto(docSnap.data().photo) : "";
-      } else {
-        await setDoc(doc(db, "users", currentUser.uid), {
-          accountCreatedDate: new Date(),
-          email: currentUser.email,
-          name: currentUser.displayName,
-          phoneNumber: currentUser.phoneNumber,
-          photo: currentUser.photoURL,
-          provider: `Login-${currentUser.providerData[0].providerId}`,
-          savedPosts: [],
-          uid: currentUser.uid,
-          zipCode: 0,
-        });
+  useEffect(() => {
+    async function authChange() {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setCurrentUser(user);
+          setLoggedIn(true);
+        } else {
+          setCurrentUser("");
+        }
+      });
+
+      if (currentUser) {
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        console.log(docRef);
+        if (docSnap.exists()) {
+          console.log(docSnap.data().photo);
+          docSnap.data().photo ? setPhoto(docSnap.data().photo) : "";
+        } else {
+          await setDoc(doc(db, "users", currentUser.uid), {
+            accountCreatedDate: new Date(),
+            email: currentUser.email,
+            name: currentUser.displayName,
+            phoneNumber: currentUser.phoneNumber,
+            photo: currentUser.photoURL,
+            provider: `Login-${currentUser.providerData[0].providerId}`,
+            savedPosts: [],
+            uid: currentUser.uid,
+            zipCode: 0,
+          });
+        }
       }
     }
+    authChange();
   }, [loggedIn]);
 
   const toggleSignOutModal = () => setSignoutModal(!signoutModal);
-
+  console.log(currentUser);
+  useEffect(() => {
+    router.prefetch("/signIn/SignIn");
+  }, []);
   return (
     <nav className={style.NavContainer}>
       <div className={style.LogoDiv}>
@@ -93,7 +101,7 @@ const NavBar = () => {
               fill: "#afafaf",
             }}
             onClick={() => {
-              router.push("/signIn/SignIn");
+              router.push({ pathname: "/signIn/SignIn" });
             }}
           />
         )}
@@ -102,7 +110,7 @@ const NavBar = () => {
             <li
               className={style.SignIn}
               onClick={() => {
-                router.push("/signIn/SignIn");
+                router.push({ pathname: "/signIn/SignIn" });
               }}
               style={{
                 display: currentUser ? "none" : "block",
@@ -121,15 +129,18 @@ const NavBar = () => {
               Sign Out
             </li>
             <li>
-              <Link href= {
-                currentUser?
-                `/userProfilePage/${currentUser.uid}`:
-                {
-                pathname:"/signIn/SignIn",
-                query:{
-                  routeBack: `/userProfilePage/`
-                }}
-              }>
+              <Link
+                href={
+                  currentUser
+                    ? `/userProfilePage/${currentUser.uid}`
+                    : {
+                        pathname: "/signIn/SignIn",
+                        query: {
+                          routeBack: `/userProfilePage/`,
+                        },
+                      }
+                }
+              >
                 <span>My Profile</span>
               </Link>
             </li>
