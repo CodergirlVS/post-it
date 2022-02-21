@@ -54,9 +54,9 @@ function UserProfile() {
   }, [uid]);
   console.log(user);
 
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user) => (user ? "" : router.push("/")));
-  })
+//   useEffect(()=>{
+//     onAuthStateChanged(auth, (user) => (user ? "" : router.push("/")));
+//   })
   return (
     <div>
       <main className={style.UserProfileContainer}>
