@@ -12,8 +12,7 @@ const CardsContainer = ({
   handleClick,
 }) => {
   return (
-    <div>
-      <Container className={style.PostsDisplay}>
+      <div className={style.PostsDisplay}>
         {posts.map((post) => (
           <div key={post.id}>
             <Card className={style.Cards}>
@@ -63,8 +62,7 @@ const CardsContainer = ({
             </>
           </div>
         ))}
-      </Container>
-    </div>
+      </div>
   );
 };
 export default CardsContainer;

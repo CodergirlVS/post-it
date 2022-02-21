@@ -1,4 +1,5 @@
 .UserProfileContainer {
+
   margin-top: 4%;
   margin-right: 10%;
   margin-left: 5%;
@@ -152,6 +153,7 @@
   ##Device = Most of the Smartphones Mobiles (Portrait)
   ##Screen = B/w 320px to 479px
 */
+
 
 @media (min-width: 360px) and (max-width: 640px) {
   .UserProfileContainer {
