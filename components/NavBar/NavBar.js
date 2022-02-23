@@ -15,6 +15,7 @@ const NavBar = () => {
   const [signoutModal, setSignoutModal] = useState(false);
   const [photo, setPhoto] = useState("");
   const router = useRouter();
+  const routeQuery = router.asPath
 
   useEffect(() => {
     async function authChange() {
@@ -30,9 +31,8 @@ const NavBar = () => {
       if (currentUser) {
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
-        console.log(docRef);
+
         if (docSnap.exists()) {
-          console.log(docSnap.data().photo);
           docSnap.data().photo ? setPhoto(docSnap.data().photo) : "";
         } else {
           await setDoc(doc(db, "users", currentUser.uid), {
@@ -53,8 +53,7 @@ const NavBar = () => {
   }, [loggedIn]);
 
   const toggleSignOutModal = () => setSignoutModal(!signoutModal);
-  console.log(currentUser);
- 
+
   return (
     <nav className={style.NavContainer}>
       <div className={style.LogoDiv}>
@@ -98,9 +97,6 @@ const NavBar = () => {
               marginBottom: "0",
               fill: "#afafaf",
             }}
-            onClick={() => {
-              router.push({ pathname: "/signIn/SignIn" });
-            }}
           />
         )}
         <div className={style.ProfileDiv}>
@@ -108,8 +104,12 @@ const NavBar = () => {
             <li
               className={style.SignIn}
               onClick={() => {
-                router.push({ pathname: "/signIn/SignIn" });
-              }}
+                router.push({
+                    pathname: "/signIn/SignIn",
+                    query: {
+                      routeTo: routeQuery} ,
+                    })
+                  }}
               style={{
                 display: currentUser ? "none" : "block",
                 color: "#008000",
