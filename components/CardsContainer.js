@@ -1,9 +1,9 @@
 import React from "react";
-import { Container, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import style from "../styles/Home.module.css";
 import { formatDay } from "../utils/DaysAgo";
-import DeletePost from "./DeletePosts";
+import DeletePost from "../utils/DeletePosts";
 import ZipToCity from "../utils/ZipToCity";
 import NumberFormat from "react-number-format";
 
@@ -25,12 +25,14 @@ const CardsContainer = ({
                 textDecoration: "none",
               }}
             >
-              <Card.Img
-                variant="top"
-                src={post.imageUrls}
-                alt={post.title}
-                className={style.CardImage}
-              />
+              <Card.Text className={style.CardImgDiv}>
+                <Card.Img
+                  variant="top"
+                  src={post.imageUrls}
+                  alt={post.title}
+                  className={style.CardImage}
+                />
+              </Card.Text>
               <Card.Body>
                 <Card.Title
                   className="h6"

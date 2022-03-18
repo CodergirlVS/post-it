@@ -17,6 +17,10 @@ const Sort = ({ setSortValue, setSortType }) => {
       setSortValue("postDate");
       setSortType("desc");
       setSortOption("Post Date Desc");
+    } else if (e.target.value === "ZipCodes Desc") {
+      setSortValue("zip");
+      setSortType("desc");
+      setSortOption("ZipCodes Desc");
     } else {
       setSortValue(e.target.value.split(" ")[0].toLowerCase());
       setSortType(e.target.value.split(" ")[1].toLowerCase());
@@ -34,10 +38,11 @@ const Sort = ({ setSortValue, setSortType }) => {
         variant="standard"
         sx={{ m: 1, minWidth: 115, bottom: 8, color: "#00243D" }}
       >
-        <InputLabel id="demo-simple-select-helper-label">SortBy</InputLabel>
+        <InputLabel id="selectLabel">SortBy</InputLabel>
         <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
+          labelId="selectLabel"
+          id="mySelect"
+          label="SortBy"
           value={sortOption}
           renderValue={() => renderValue(sortOption)}
           onChange={handleSortChange}
@@ -53,6 +58,7 @@ const Sort = ({ setSortValue, setSortType }) => {
           <MenuItem value="Title Desc">Title Desc</MenuItem>
           <MenuItem value="Post Date Asc">Post Date</MenuItem>
           <MenuItem value="Post Date Desc">Post Date Desc</MenuItem>
+          <MenuItem value="ZipCodes Desc">ZipCodes Desc</MenuItem>
         </Select>
       </FormControl>
     </>
